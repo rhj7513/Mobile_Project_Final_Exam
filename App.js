@@ -119,7 +119,9 @@ const styles = StyleSheet.create({
         width:'100%',
         flexDirection:'row',
         justifyContent: 'space-between',
-        alignItems: 'center'
+        alignItems: 'center',
+        paddingRight:15,
+        paddingLeft:15
 
       },
       input:{
@@ -129,7 +131,8 @@ const styles = StyleSheet.create({
         borderRadius: 60,
         bordercolor: '#c0c0c0',
         borderWidth: 1,
-        width: 250,
+        width: 310,
+        
 
       },
       addWrapper:{
@@ -141,8 +144,6 @@ const styles = StyleSheet.create({
         alignItems:'center',
         bordercolor: '#c0c0c0',
         borderWidth: 1,
-
-
       },
       addText:{
 
