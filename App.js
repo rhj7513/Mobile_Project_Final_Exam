@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import { KeyboardAvoidingView, StyleSheet, View, Text, TouchableOpacity, Platform, TextInput } from 'react-native';
+import Icon from '@expo/vector-icons/MaterialCommunityIcons';
 
 //항목 보이는 컴포넌트
 import Task from './Components/Task';
@@ -87,7 +88,8 @@ export default function App (){
             <TextInput style={styles.input} placeholder ={'Write a task'}  value ={task}  onChangeText={text => setTask(text)}/>
             <TouchableOpacity onPress={() => handleAddTask()}>
                 <View style={styles.addWrapper}>
-                    <Text style={styles.addText}>+</Text>
+                    {/* <Text style={styles.addText}>+</Text> */}
+                    <Icon name={task ? "send" : "image"} size={23} color={'red'} />
                 </View>
             </TouchableOpacity>
 
