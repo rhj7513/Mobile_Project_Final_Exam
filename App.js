@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import { KeyboardAvoidingView, StyleSheet, View, Text, TouchableOpacity, Platform, TextInput } from 'react-native';
 
 //항목 보이는 컴포넌트
-import Task from './Pages/Task';
+import Task from './Components/Task';
 
 export default function App (){
     //사용자 입력 할일
