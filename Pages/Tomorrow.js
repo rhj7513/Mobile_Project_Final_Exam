@@ -31,17 +31,28 @@ export default function Tomorrow (){
     //항목 눌렀을 때 항목 안 없어지고 체크표시 여부로만 판단하고 싶으면 이 코드 살려요
     //누르면 할일 적용
     const handleAddTask = () => {
-        if (task) {
-          setTaskItems([...taskItems, { text: task, completed: false }]);
-          setTask('');
-        }
+      if (task) {
+        setTaskItems([...taskItems, { text: task, completed: false }]);
+        setTask('');
       }
+    }
     //할일 다 했을 때 상태
     const completeTask = (index) => {
-        let itemsCopy = [...taskItems];
-        itemsCopy[index].completed = !itemsCopy[index].completed; // 토글
-        setTaskItems(itemsCopy);
+      let itemsCopy = [...taskItems];
+      itemsCopy[index].completed = !itemsCopy[index].completed; // 토글
+      setTaskItems(itemsCopy);
+    }
+
+    //아이콘 이미지일 때는 else
+    const handleIconPress = () => {
+      if (task) {
+        handleAddTask();
+      } else {
+        // 다른 함수 실행
+        // 예시: handleImageTask();
+        console.log("나 눌려요")
       }
+    };
 
    
 
@@ -86,7 +97,7 @@ export default function Tomorrow (){
         style={styles.writeTaskWrapper}
         >
             <TextInput style={styles.input} placeholder ={'Write a task'}  value ={task}  onChangeText={text => setTask(text)}/>
-            <TouchableOpacity onPress={() => handleAddTask()}>
+            <TouchableOpacity onPress={() => handleIconPress()}>
                 <View style={styles.addWrapper}>
                     {/* <Text style={styles.addText}>+</Text> */}
                     <Icon name={task ? "send" : "image"} size={23} color={'red'} />
