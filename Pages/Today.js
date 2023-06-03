@@ -44,6 +44,7 @@ export default function Today (){
     }
 
 
+    //아이콘 이미지일 때는 else
     const handleIconPress = () => {
       if (task) {
         handleAddTask();
