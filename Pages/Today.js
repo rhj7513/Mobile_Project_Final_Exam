@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { KeyboardAvoidingView, StyleSheet, View, Text, TouchableOpacity, Platform, TextInput } from 'react-native';
+import { KeyboardAvoidingView, StyleSheet, View, Text, TouchableOpacity, Platform, TextInput, ScrollView } from 'react-native';
 import Icon from '@expo/vector-icons/MaterialCommunityIcons';
 
 //항목 보이는 컴포넌트
@@ -10,25 +10,10 @@ export default function Today (){
     const [task, setTask] = useState();
     //Item으로 들어갈 task들
     const [taskItems, setTaskItems] = useState([]);
+    //stautsbar
+    const [completedCount, setCompletedCount] = useState(0); // 체크된 항목 개수 상태
 
-    // 할일 다 하고 목록 눌렀을 때 항목 자체를 삭제하고 싶으면 주석 코드 살리고 밑에 코드 죽여요
-    // //누르면 할일 적용
-    // const handleAddTask = () => {
-    //     // Keyboard.dismiss();
-    //     console.log("눌림?", task);
-    //     setTaskItems([...taskItems, task])
-    //     setTask(null);
-    // }
 
-    // //할일 다 했을 때 상태
-    // const completeTask = (index) =>{
-    //     let itemsCopy = [...taskItems];
-    //     itemsCopy.splice(index, 1);
-    //     setTaskItems(itemsCopy);
-
-    // }
-
-    //항목 눌렀을 때 항목 안 없어지고 체크표시 여부로만 판단하고 싶으면 이 코드 살려요
     //누르면 할일 적용
     const handleAddTask = () => {
       if (task) {
@@ -41,67 +26,69 @@ export default function Today (){
       let itemsCopy = [...taskItems];
       itemsCopy[index].completed = !itemsCopy[index].completed; // 토글
       setTaskItems(itemsCopy);
+      // 체크된 항목 개수 업데이트
+      const completedTasks = itemsCopy.filter((item) => item.completed);
+      setCompletedCount(completedTasks.length);
     }
 
+    //모든 항목을 삭제할 때
+    const removeAllTasks = () => {
+      setTaskItems([]);
+      setCompletedCount(0); // 모든 항목 삭제 시 체크된 항목 개수 초기화
+    }
 
-    //아이콘 이미지일 때는 else
-    const handleIconPress = () => {
-      if (task) {
-        handleAddTask();
-      } else {
-        // 다른 함수 실행
-        // 예시: handleImageTask();
-        console.log("나 눌려요")
-      }
-    };
-
-   
+    // 상태 표시줄 게이지 계산
+    const statusBarWidth = taskItems.length > 0 ? (completedCount / taskItems.length) * 100 : 0;
 
 
   return (
     <View style={styles.container}>
         {/* 오늘 할일 */}
       <View style={styles.tasksWrapper}>
-        <Text style={styles.sectionTitle}>오늘 할일</Text>
-
-        <View style={styles.items}>
-
-            {/* {
-                // 할일 항목 걍 없애버리고 싶으면 이 코드 살리셈!!!
-                 taskItems.map((item, index) => {
-                    return (
-                      <TouchableOpacity key={index} onPress={() => completeTask(index)}>
-                        <Task text={item} />
-                      </TouchableOpacity>
-                    );
-                  })
-            } */}
-
-            {/* 할일 목록 띄우는 곳 체크여부o*/}{
-            taskItems.map((item, index) => {
-                return (
-                    <Task
-                    key={index}
-                    text={item.text}
-                    completed={item.completed}
-                    onToggle={() => completeTask(index)}
-                    />
-                );
-                })
-            }
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Text style={styles.sectionTitle}>오늘 할일</Text>
+          <TouchableOpacity onPress={() => removeAllTasks()} style={{marginTop:5}}>
+            <Icon name='trash-can' size={30} color={'red'} />
+          </TouchableOpacity>
         </View>
-      </View>
+        
+        <ScrollView>
+          <View style={styles.items}>
 
+              {/* 할일 목록 띄우는 곳 체크여부o*/}{
+              taskItems.map((item, index) => {
+                  return (
+                      <Task
+                      key={index}
+                      text={item.text}
+                      completed={item.completed}
+                      onToggle={() => completeTask(index)}
+                      />
+                  );
+                  })
+              }
+          </View>
+        </ScrollView>
+      </View>
+     
+      {/* 상태 표시줄 */}
+      <View style={styles.statusBar}>
+          <View style={{ width: `${statusBarWidth}%`, height: '100%', backgroundColor: '#55bcf6', borderRadius: 10, }} />
+      </View>
+     
+  
+   
+
+      
     {/* 키보드 입력하는 곳 */}
       <KeyboardAvoidingView
         behavior={Platform.os === "ios" ? "padding" : "height"}
         style={styles.writeTaskWrapper}
         >
             <TextInput style={styles.input} placeholder ={'Write a task'}  value ={task}  onChangeText={text => setTask(text)}/>
-            <TouchableOpacity onPress={() => handleIconPress()}>
+            <TouchableOpacity onPress={() => handleAddTask()}>
                 <View style={styles.addWrapper}>
-                    {/* <Text style={styles.addText}>+</Text> */}
-                    <Icon name={task ? "send" : "image"} size={23} color={'red'} />
+                    <Icon name={task ? "send" : "send"} size={23} color={'red'} />
                 </View>
             </TouchableOpacity>
 
@@ -125,7 +112,8 @@ const styles = StyleSheet.create({
         fontWeight:'bold',
       },
       items:{
-        marginTop: 30,
+        flex:1,
+        marginTop: 50,
       },
       writeTaskWrapper:{
         position:'absolute',
@@ -157,8 +145,13 @@ const styles = StyleSheet.create({
         bordercolor: '#c0c0c0',
         borderWidth: 1,
       },
-      addText:{
-
+      statusBar:{
+        height: 30,
+        backgroundColor: 'lightgray',
+        position:'absolute',
+        top:80,
+        width:'90%',
+        borderRadius: 10,
+        right:22,
       }
-
 });
