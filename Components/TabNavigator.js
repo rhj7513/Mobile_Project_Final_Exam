@@ -4,6 +4,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import Today from '../Pages/Today';
 import Tomorrow from '../Pages/Tomorrow';
 
+
 const Tab = createMaterialTopTabNavigator();
 
 function TabNavigator () {
