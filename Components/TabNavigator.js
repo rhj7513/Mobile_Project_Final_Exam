@@ -10,10 +10,11 @@ const Tab = createMaterialTopTabNavigator();
 function TabNavigator () {
   return (
     <Tab.Navigator
-      tabBarOptions={{
-        showLabel: false, // 라벨 숨김
-        showIcon: false, // 아이콘 숨김
+    screenOptions={{
+      tabBarShowLabel: false, // 라벨 숨김
+      tabBarShowIcon: false, // 아이콘 숨김
       }}
+      initialRouteName="Today"
     >
       <Tab.Screen name="Today" component={Today}/>
       <Tab.Screen name="Tomorrow" component={Tomorrow}/>
